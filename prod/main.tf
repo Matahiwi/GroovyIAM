@@ -33,5 +33,5 @@ module "iam" {
   # Pass trust relationship from datasource to module as a variable
   iam_trust_policy = data.aws_iam_policy_document.iam_role_trust_relationship.json
   # Pass the IAM permissions from datasource to module as a variable
-  iam_policy_permissions = data.aws_iam_policy_document.secret_manager_permissions.json
+  iam_policy_permissions = data.aws_iam_policy_document.bucket_permissions.json
 }
