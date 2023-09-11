@@ -1,13 +1,13 @@
 variable "role_name" {
   description = "Name of the IAM role we are creating and attaching the policy to"
   type        = string
-  default     = "TauputaTerraformIAMRole"
+  default     = "TauputaTerraformIAMBucketRole"
 }
 
 variable "policy_name" {
   description = "The name of the Policy we are creating"
   type        = string
-  default     = "TauputaTerraformIAMPolicy"
+  default     = "TauputaTerraformIAMBucketPolicy"
 }
 
 variable "iam_path" {

@@ -1,20 +1,21 @@
-data "aws_iam_policy_document" "secret_manager_permissions" {
+data "aws_iam_policy_document" "bucket_permissions" {
   # data source containing the permissions used the iam custom policy
   statement {
-    sid    = "ReadSquadSecrets"
+    sid    = "ReadBucketPolicy"
     effect = "Allow"
 
     resources = [
-      "arn:aws:ssm:ap-southeast-2:969296761654:parameter/core/*",
-      "arn:aws:secretsmanager:ap-southeast-2:969296761654:secret:/core/*",
+      "arn:aws:s3:::harriett789"
     ]
 
     actions = [
-      "ssm:GetParameter",
-      "secretsmanager:ListSecretVersionIds",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:GetResourcePolicy",
-      "secretsmanager:DescribeSecret",
+      "s3:GetAccountPublicAccessBlock",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:GetBucketPolicyStatus",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:ListAccessPoints",
+      "s3:ListAllMyBuckets"
     ]
   }
 }
