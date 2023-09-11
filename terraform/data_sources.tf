@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "bucket_permissions" {
   # data source containing the permissions used the iam custom policy
   statement {
-    sid    = "ReadBucketPolicy"
+    sid    = "TerraformReadBucketPolicy"
     effect = "Allow"
 
     resources = [
