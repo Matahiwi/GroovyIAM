@@ -1,5 +1,5 @@
 # Public repo with 2 environments: dev and prod
-# Each environment has the same 2 variables: ACCOUNT_ID: 969296761654 and REGION ap-southeast-2
+# Each environment has the same 3 variables: 
 
 name: Play Terraform and workflow_dispatch menus
 on:
@@ -40,9 +40,9 @@ jobs:
       - name: Assume AWS Account IAM Role
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "arn:aws:iam::${{ vars.account_id }}:role/IAMRole"
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
           role-session-name: "${{ matrix.value }}-planning"
-          aws-region: ${{ vars.region }}
 
       - name: Running Terraform Plan
         run: |
@@ -55,9 +55,9 @@ jobs:
           fi
 
           terraform_plan=${{ matrix.value }}.plan
-          terraform init -backend-config=bucket=harriett789 -backend-config=key=iam_test/${{ matrix.value }}.tfstate
+          terraform init -backend-config=bucket=${{ vars.S3_BUCKET }} -backend-config=key=iam_test/${{ matrix.value }}.tfstate
           terraform plan -out=/tmp/$terraform_plan
-          aws s3 cp /tmp/$terraform_plan s3://harriett789/iam_test/
+          aws s3 cp /tmp/$terraform_plan s3://${{ vars.S3_BUCKET }}/iam_test/
 
   terraform_apply:
     if: inputs.action == 'apply'
@@ -80,9 +80,9 @@ jobs:
       - name: Assume AWS Account IAM Role
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "arn:aws:iam::${{ vars.account_id }}:role/IAMRole"
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
           role-session-name: "${{ matrix.value }}-applying"
-          aws-region: ${{ vars.region }}
 
       - name: Running Terraform Apply
         run: |
@@ -95,8 +95,8 @@ jobs:
           fi
 
           terraform_plan=${{ matrix.value }}.plan
-          aws s3 cp s3://harriett789/iam_test/$terraform_plan /tmp/$terraform_plan
-          terraform init -backend-config=bucket=harriett789 -backend-config=key=iam_test/${{ matrix.value }}.tfstate
+          aws s3 cp s3://${{ vars.S3_BUCKET }}/iam_test/$terraform_plan /tmp/$terraform_plan
+          terraform init -backend-config=bucket=${{ vars.S3_BUCKET }} -backend-config=key=iam_test/${{ matrix.value }}.tfstate
           terraform apply -input=false /tmp/$terraform_plan
 
 
@@ -121,9 +121,9 @@ jobs:
       - name: Assume AWS Account IAM Role
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "arn:aws:iam::${{ vars.account_id }}:role/IAMRole"
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
           role-session-name: "${{ matrix.value }}-applying"
-          aws-region: ${{ vars.region }}
 
       - name: Running Terraform Destroy
         run: |
@@ -135,7 +135,7 @@ jobs:
               rm -rf .terraform
           fi
 
-          terraform init -backend-config=bucket=harriett789 -backend-config=key=iam_test/${{ matrix.value }}.tfstate
+          terraform init -backend-config=bucket=${{ vars.S3_BUCKET }} -backend-config=key=iam_test/${{ matrix.value }}.tfstate
           terraform destroy -auto-approve
 
 
