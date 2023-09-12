@@ -27,9 +27,6 @@ jobs:
         #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
     environment: "${{ matrix.env }}"  # use github environment from the matrix array environment val
-    defaults:
-      run:
-        working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
@@ -70,9 +67,6 @@ jobs:
         #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
     environment: "${{ matrix.env }}"  # use github environment from the matrix array value
-    defaults:
-      run:
-        working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
@@ -114,9 +108,6 @@ jobs:
         #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
     environment: "${{ matrix.env }}"  # use github environment from the matrix array value
-    defaults:
-      run:
-        working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
