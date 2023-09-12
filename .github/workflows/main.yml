@@ -23,10 +23,11 @@ jobs:
     if: inputs.action == 'plan'
     strategy:
       matrix:
-        value: [ prod, dev ] 
-        #value: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
+        env: [ prod, dev ] 
+        #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
-    environment: "${{ matrix.value }}"  # use github environment from the matrix array value
+    environment: "${{ matrix.env }}"  # use github environment from the matrix array value
+    working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
@@ -63,10 +64,11 @@ jobs:
     if: inputs.action == 'apply'
     strategy:
       matrix:
-        value: [ prod, dev ] 
-        #value: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
+        env: [ prod, dev ]  
+        #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
-    environment: "${{ matrix.value }}"  # use github environment from the matrix array value
+    environment: "${{ matrix.env }}"  # use github environment from the matrix array value
+    working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
@@ -104,10 +106,11 @@ jobs:
     if: inputs.action == 'destroy'
     strategy:
       matrix:
-        value: [ prod, dev ] 
-        #value: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
+        env: [ prod, dev ]  
+        #env: [ prod, prod-us, prod-eu, dev, identity ] # GitHub Action environments
     runs-on: ubuntu-latest
-    environment: "${{ matrix.value }}"  # use github environment from the matrix array value
+    environment: "${{ matrix.env }}"  # use github environment from the matrix array value
+    working-directory: ${{ vars.WORKING_DIRECTORY }}/${{ matrix.env }}
 
     steps:
       - name: Clone the Repo
